@@ -21,10 +21,3 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::resource('employees', EmployeeController::class)
     ->only(['index', 'store', 'show', 'update', 'destroy']);
 });
-
-// Route::group(['middleware' => ['auth:sanctum']], function(){
-//     Route::get('companies', [CompanyController::class, 'index']);
-// });
-
-// Route::post('register', [AuthController::class, 'register']);
-
