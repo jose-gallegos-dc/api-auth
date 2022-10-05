@@ -18,13 +18,13 @@ class CompanySeeder extends Seeder
         $company =  new Company();
         $company->name = "lala";
         $company->email = "lala@gmail.com";
-        $company->logo = "logo_lala.png";
+        $company->logo = "1234567890_lala.png";
         $company->save();
 
         $company =  new Company();
         $company->name = "pepsi";
         $company->email = "pepsi@gmail.com";
-        $company->logo = "logo_pepsi.png";
+        $company->logo = "1234567890_pepsi.png";
         $company->save();
     }
 }

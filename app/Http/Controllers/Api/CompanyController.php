@@ -23,8 +23,13 @@ class CompanyController extends Controller
 
     public function store(CompanyRequest $request){
 
-        $company = Company::create($request->all());
-        
+        $company = new Company($request->input());
+        // Modifica el registro del campo logo en la DB
+        $company->logo = $logoName = time()."_". $request->file('logo')->getClientOriginalName();
+        // Mueve la imagen cargada de temporal a la carpeta pública
+        $request->file('logo')->move(public_path("logos"), $logoName);
+        $company->save();
+
         return response()->json([
             "status" => true,
             "message" => "Company created successfully.",

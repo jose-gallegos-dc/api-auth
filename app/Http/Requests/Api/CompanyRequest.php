@@ -12,13 +12,12 @@ class CompanyRequest extends FormRequest
         return true;
     }
 
-  
     public function rules()
     {
         return [
             'email' => ($this->getMethod() == 'POST') ? 'required|email|unique:companies' : 'required|email|unique:companies,email,'.$this->company->id,
             'name' => 'required|max:255',
-            'logo' => 'required',
+            'logo' => 'required|dimensions:min_width=150,min_height=150|mimes:jpg,jpeg,png',
             'website' => 'nullable'
         ];
     }
