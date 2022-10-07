@@ -8,6 +8,7 @@ use App\Http\Requests\Api\RegisterRequest;
 use App\Http\Requests\Api\LoginRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class AuthController extends Controller
 {
@@ -33,11 +34,14 @@ class AuthController extends Controller
         if (Auth::attempt($request->only('email', 'password'))) {
             $user = Auth::user();
             $token = $user->createToken('token')->plainTextToken;
-            $cookie = cookie('cookie_token', $token, 60 * 24);
+            $expires = Carbon::now()->addMonth(); // Un mes
+            $expiresInMinutes = $expires->diffInMinutes(Carbon::now()); // Un mes en minutos
+            $cookie = cookie('access_token', $token, $expiresInMinutes);
             return response()->json([
                 'status' => true,
-                'message' => 'Login successful',
-                'token' => $token,
+                'token_name' => 'access_token',
+                'token_value' => $token,
+                'token_expires' => $expiresInMinutes
             ], 200)->withCookie($cookie);
         } else {
             return response()->json([
