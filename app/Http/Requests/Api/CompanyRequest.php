@@ -9,16 +9,16 @@ class CompanyRequest extends FormRequest
  
     public function authorize()
     {
-        return true;
+      return true;
     }
 
     public function rules()
     {
-        return [
-            'email' => ($this->getMethod() == 'POST') ? 'required|email|unique:companies' : 'required|email|unique:companies,email,'.$this->company->id,
-            'name' => 'required|max:255',
-            'logo' => 'required|dimensions:min_width=150,min_height=150|mimes:jpg,jpeg,png',
-            'website' => 'nullable'
-        ];
+      return [
+         'email' => ($this->getMethod() == 'POST') ? 'required|email|unique:companies' : 'required|email|unique:companies,email,'.$this->company->id,
+         'logo' => ($this->getMethod() == 'POST') ? 'required|dimensions:min_width=150,min_height=150|mimes:jpg,jpeg,png' : 'dimensions:min_width=150,min_height=150|mimes:jpg,jpeg,png',
+         'name' => 'required|max:255',
+         'website' => 'nullable'
+      ];
     }
 }

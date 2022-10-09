@@ -48,19 +48,29 @@ class CompanyController extends Controller
 
     public function update(CompanyRequest $request, Company $company){
 
-        $fields = $request->all();
-        $company->fill($fields)->save();
-        
-        return response()->json([
-            "status" => true,
-            "message" => "Company updated successfully.",
-            "data" => $company
-        ], 200);
+      $company->fill($request->all());
+
+      if($request->file('logo')){
+         $company->logo = $logoName = time()."_". $request->file('logo')->getClientOriginalName();
+         $request->file('logo')->move(public_path("logos"), $logoName);
+         // Elimina la imagen antigua de la compañía asociada
+         unlink(public_path("logos/". $request->input('logo_old')));
+      }
+
+      $company->save();
+    
+      return response()->json([
+         "status" => true,
+         "message" => "Company updated successfully.",
+         "data" => $company
+      ], 200);
     }
 
-    public function destroy(Company $company){
+    public function destroy(Request $request, Company $company){
 
-        $company->delete();
+      unlink(public_path("logos/". $request->input('logo_old')));
+      $company->delete();
+
         return response()->json([
             "status" => true,
             "message" => "Company deleted successfully.",
